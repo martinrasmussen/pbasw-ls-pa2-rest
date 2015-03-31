@@ -1,3 +1,5 @@
+package application;
+
 import org.restlet.Application;
 import org.restlet.Component;
 import org.restlet.Restlet;
@@ -5,6 +7,7 @@ import org.restlet.data.Protocol;
 import org.restlet.routing.Router;
 import resources.HelloWorldResource;
 import resources.HelloWorldRestlet;
+import resources.countryinfo.CountryInfoResource;
 
 public class ServerApplication extends Application {
 
@@ -33,6 +36,7 @@ public class ServerApplication extends Application {
         // Defines only one route
         router.attach("/resource", HelloWorldResource.class);
         router.attach("/restlet", new HelloWorldRestlet());
+        router.attach("/country/{countryName}", CountryInfoResource.class);
 
         return router;
     }

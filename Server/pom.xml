@@ -36,6 +36,19 @@
             <artifactId>org.restlet</artifactId>
             <version>${restlet-version}</version>
         </dependency>
+
+        <dependency>
+            <groupId>org.restlet.jse</groupId>
+            <artifactId>org.restlet.ext.velocity</artifactId>
+            <version>${restlet-version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.restlet.jse</groupId>
+            <artifactId>org.restlet.ext.jackson</artifactId>
+            <version>${restlet-version}</version>
+        </dependency>
+
     </dependencies>
 
 </project>
