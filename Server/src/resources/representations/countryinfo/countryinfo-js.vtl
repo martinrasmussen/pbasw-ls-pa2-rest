@@ -1,0 +1,44 @@
+#set($jQuery = '$') ## Velocity parse fix for jQuery
+#set($mapZoom = 6)
+var map = null;
+var geocoder = null;
+var gcResult = null;
+var gcStatus = null;
+
+function initializeMap(){
+    var mapOptions = {
+        //zoom: ${mapZoom}
+    };
+    map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
+    geocoder = new google.maps.Geocoder();
+    geocoder.geocode({ 'address': '${country.getName()}' }, function (results, status) {
+        gcResults = results;
+        gcStatus = status;
+        if (status == google.maps.GeocoderStatus.OK) {
+            map.fitBounds(gcResults[0].geometry.viewport);
+        }
+    });
+}
+google.maps.event.addDomListener(window, "load", initializeMap);
+
+${jQuery}('#infoModal').on('show.bs.modal', function(event) {
+    var modal = ${jQuery}(this);
+    modal.find('.modal-title').text('Displaying information about ${country.getName()}');
+    modal.find('#Country').html("<b>Country: </b><br> ${country.getName()}");
+    modal.find('#Capital').html("<b>Capital: </b><br> ${country.getCapital()}");
+    modal.find('#ISO2').html("<b>ISO2: </b><br>	${country.getISO()}");
+    modal.find('#Lat').html("<b>Lat: </b><br> ${country.getLatitude()}");
+    modal.find('#Lng').html("<b>Lng: </b><br> ${country.getLongitude()}");
+});
+
+${jQuery}('#mapModal').on('show.bs.modal', function(event) {
+    var modal = ${jQuery}(this);
+    modal.find('.modal-title').text('Displaying map for  ${country.getName()}');
+});
+
+${jQuery}('#mapModal').on('shown.bs.modal', function(event) {
+    console.log("RESIZING");
+    google.maps.event.trigger(map, "resize"); /* Act on the event */
+    //map.setCenter(new google.maps.LatLng(parseInt(${country.getLatitude()}), parseInt(${country.getLongitude()})));
+    map.fitBounds(gcResults[0].geometry.viewport);
+});

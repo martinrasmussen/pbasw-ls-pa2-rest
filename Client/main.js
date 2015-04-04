@@ -4,33 +4,31 @@ var map = null;
 $(document).ready(function() {
 
 	$.ajax({
-    url: 'http://api.worldbank.org/country/dk?format=jsonP',
-    dataType: 'jsonp',
-    jsonp: "prefix",
-    jsonpCallback: "getdata", // This value doesnt really matter
-    success: function(data, status){
-        console.log("Success");
-        
+        url: 'http://api.worldbank.org/country/dk?format=jsonP',
+        dataType: 'jsonp',
+        jsonp: "prefix",
+        jsonpCallback: "getdata", // This value doesnt really matter
+        success: function(data, status){
+            console.log("Success");
 
-        country = data[1][0];
-        console.log(country);
 
-        var mapOptions = {
-          zoom: 6
-        };
-        map = new google.maps.Map(document.getElementById('map-canvas'),
-            mapOptions);        
-    },
-    error: function(xhr, status, error){
-        console.log("Error");
-        console.log(xhr.statusText);
-        console.log(xhr.responseText);
-        console.log(xhr.status);
-        console.log(error);
-    }
-})
-	
-	
+            country = data[1][0];
+            console.log(country);
+
+            var mapOptions = {
+              zoom: 6
+            };
+            map = new google.maps.Map(document.getElementById('map-canvas'),
+                mapOptions);
+        },
+        error: function(xhr, status, error){
+            console.log("Error");
+            console.log(xhr.statusText);
+            console.log(xhr.responseText);
+            console.log(xhr.status);
+            console.log(error);
+        }
+    })
 });
 
 $('#infoModal').on('show.bs.modal', function(event) {
