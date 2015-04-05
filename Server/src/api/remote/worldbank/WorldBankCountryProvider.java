@@ -29,8 +29,8 @@ public class WorldBankCountryProvider implements CountryProvider {
     @Override
     public Country getCountryInfoFromName(String countryName) {
         if (nameToAlpha2Converter == null) throw new RuntimeException("No CountryNameToAlpha2Converter set!");
-        String alpha2Code = nameToAlpha2Converter.convert(countryName);
-        return getCountryInfoFromAlpha2Code(alpha2Code);
+        CountryNameToAlpha2Converter.ConversionResult conversion = nameToAlpha2Converter.convert(countryName);
+        return getCountryInfoFromAlpha2Code(conversion.getAlpha2Code());
     }
 
     @Override
@@ -40,17 +40,19 @@ public class WorldBankCountryProvider implements CountryProvider {
         try (InputStream stream = new URL(url).openStream()) {
             Reader reader = new BufferedReader(new InputStreamReader(stream));
             JsonNode node = new ObjectMapper().readTree(reader);
-            node = node.get(1).get(0); // Unwrap from list
+            try {
+                node = node.get(1).get(0); // Attempt to unwrap from list. Risk of nullpointer if node structure is not as expected
+            } catch (NullPointerException e) {
+                return null;
+            }
             countryInfo = new WorldBankCountry();
             countryInfo.setName(node.get(NAME_FIELD).asText());
             countryInfo.setCapital(node.get(CAPITAL_FIELD).asText());
             countryInfo.setISO(node.get(ISO_2_FIELD).asText());
             countryInfo.setLatitude(node.get(LATITUDE_FIELD).asDouble());
             countryInfo.setLongitude(node.get(LONGITUDE_FIELD).asDouble());
-        } catch (MalformedURLException e) {
-            throw new RuntimeException(e); // TODO: Handle exception
         } catch (IOException e) {
-            throw new RuntimeException(e); // TODO: Handle exception
+            return null;
         }
         return countryInfo;
     }

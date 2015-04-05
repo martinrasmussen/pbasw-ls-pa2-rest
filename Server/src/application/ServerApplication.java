@@ -8,6 +8,7 @@ import org.restlet.resource.Directory;
 import org.restlet.routing.Router;
 import resources.HelloWorldResource;
 import resources.HelloWorldRestlet;
+import resources.representations.countries.CountryListResource;
 import resources.representations.countryinfo.CountryInfoResource;
 
 import javax.security.auth.login.Configuration;
@@ -27,16 +28,17 @@ public class ServerApplication extends Application {
 
     }
 
-    /**
-     * Creates a root Restlet that will receive all incoming calls.
-     */
     @Override
     public synchronized Restlet createInboundRoot() {
         Router router = new Router(getContext());
 
+        // Testing
         router.attach("/resource", HelloWorldResource.class);
         router.attach("/restlet", new HelloWorldRestlet());
-        router.attach("/country/{countryName}", CountryInfoResource.class);
+
+        // Country service
+        router.attach("/countries/{countryName}", CountryInfoResource.class);
+        router.attach("/countries", CountryListResource.class);
 
         String classPath = getClass().getClassLoader().getResource("").getPath();
         final String protocol = "file://";

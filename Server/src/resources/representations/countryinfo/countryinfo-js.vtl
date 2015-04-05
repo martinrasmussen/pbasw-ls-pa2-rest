@@ -39,6 +39,19 @@ ${jQuery}('#mapModal').on('show.bs.modal', function(event) {
 ${jQuery}('#mapModal').on('shown.bs.modal', function(event) {
     console.log("RESIZING");
     google.maps.event.trigger(map, "resize"); /* Act on the event */
-    //map.setCenter(new google.maps.LatLng(parseInt(${country.getLatitude()}), parseInt(${country.getLongitude()})));
     map.fitBounds(gcResults[0].geometry.viewport);
 });
+
+function executeQuery() {
+
+
+    var input = document.getElementById('country-search');
+    var element = google.search.cse.element.getElement('searchresults-only0');
+    if (input.value == '') {
+        element.clearAllResults();
+    } else {
+        element.execute("${country.getName()} " + input.value);
+    }
+    return false;
+
+}
