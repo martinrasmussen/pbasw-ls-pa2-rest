@@ -6,12 +6,14 @@ import org.restlet.Restlet;
 import org.restlet.data.Protocol;
 import org.restlet.resource.Directory;
 import org.restlet.routing.Router;
+import org.restlet.routing.Template;
+import org.restlet.routing.TemplateRoute;
+import org.restlet.routing.Variable;
 import resources.HelloWorldResource;
 import resources.HelloWorldRestlet;
 import resources.representations.countries.CountryListResource;
 import resources.representations.countryinfo.CountryInfoResource;
-
-import javax.security.auth.login.Configuration;
+import resources.representations.proxy.XMLProxyResource;
 
 public class ServerApplication extends Application {
 
@@ -39,6 +41,11 @@ public class ServerApplication extends Application {
         // Country service
         router.attach("/countries/{countryName}", CountryInfoResource.class);
         router.attach("/countries", CountryListResource.class);
+
+        // Proxies
+        TemplateRoute xmlProxyRoute = router.attach("/proxy/xml/{url}", XMLProxyResource.class);
+        xmlProxyRoute.setMatchingQuery(true);   // Allow queries
+        xmlProxyRoute.getTemplate().getVariables().put("url", new Variable(Variable.TYPE_URI_ALL)); // Allow uri in parameters
 
         String classPath = getClass().getClassLoader().getResource("").getPath();
         final String protocol = "file://";

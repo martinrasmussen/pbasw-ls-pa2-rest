@@ -26,11 +26,11 @@ public class CountryInfoResource extends ServerResource {
         String countryName = (String) getRequest().getAttributes().get("countryName");
 
         CountryNameToAlpha2Converter converter = new RestCountriesNameToAlpha2Code();
-        CountryProvider provider = new WorldBankCountryProvider(converter);
         ConversionResult conversion = converter.convert(countryName);
 
         if(conversion.getStatus() == ConversionResult.ConversionResultStatus.ERROR) return get404(conversion);
 
+        CountryProvider provider = new WorldBankCountryProvider(converter);
         String message = conversion.getStatus() == ConversionResult.ConversionResultStatus.WARN ?
                 getWarnMessage(conversion) : "";
 
