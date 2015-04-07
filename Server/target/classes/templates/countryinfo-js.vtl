@@ -1,7 +1,7 @@
 #set($jQuery = '$') ## Velocity parse fix for jQuery
 #set($mapZoom = 6) ## Default map zoom level
 #set($xmlProxy = '/proxy/xml/')
-#set($wolframUrl = 'http://api.wolframalpha.com/v2/query?input=Denmark&appid=THPTEV-KH849EY8UT&latlong=55.6763,12.5681')
+#set($wolframUrl = 'http://api.wolframalpha.com/v2/query?input=&appid=THPTEV-KH849EY8UT&latlong=55.6763,12.5681')
 
 /* Google maps */
 var map = null;
@@ -49,7 +49,8 @@ ${jQuery}('#infoModal').on('show.bs.modal', function(event) {
 });
 
 /* Wolfram|Alpha modal */
-var waRequestUrl = '${xmlProxy}${wolframUrl}';
+var wolframUrl = 'http://api.wolframalpha.com/v2/query?input=${country.getName()}&appid=THPTEV-KH849EY8UT&latlong=${country.getLatitude()},${country.getLongitude()}';
+var waRequestUrl = '${xmlProxy}' + wolframUrl;
 var podContainer = ${jQuery}("#pod-container");
 var waRequest = new XMLHttpRequest();
 waRequest.open('GET', waRequestUrl, true);
