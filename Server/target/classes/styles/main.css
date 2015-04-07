@@ -1,53 +1,52 @@
 body, html {
-	width: 100%;
-	height: 100%;
+    width: 100%;
+    height: 100%;
 }
 
 body {
-	background-color: #333;
+    background-color: #333;
 }
 
 .container {
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	height: 100%;
-	width: 600px;
-	flex-direction: column;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    width: 600px;
+    flex-direction: column;
 }
 
 #conversion-message {
-	text-align: center;
-	color: #999;
-	width: 100%;
+    text-align: center;
+    color: #999;
+    width: 100%;
 }
 
 .search-wrapper {
-	text-align: center;	
-	color: white;
+    text-align: center;
+    color: white;
 }
-
 
 /* centered columns styles */
 .row-centered {
-		align-self: flex-start;	
-    text-align:center;
+    align-self: flex-start;
+    text-align: center;
 }
+
 .col-centered {
-    display:inline-block;
-    float:none;    
+    display: inline-block;
+    float: none;
 }
 
-img {
-	width: 100px;
-	height: 100px;
-	margin: 10px;
-
+.info-img {
+    width: 100px;
+    height: 100px;
+    margin: 10px;
 }
 
 #map-canvas {
-	width: 100%;
-	height: 500px;
-	margin: 0px;
-	padding: 0px;
+    width: 100%;
+    height: 500px;
+    margin: 0px;
+    padding: 0px;
 }

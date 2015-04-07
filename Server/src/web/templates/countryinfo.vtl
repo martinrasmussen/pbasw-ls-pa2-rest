@@ -52,9 +52,9 @@
                     </form>
                 </div><!-- /.col-lg-6 -->
                 <div id="countryInfo">
-                    <img src="${infoPng}" alt="..." class="img-circle" data-toggle="modal" data-target="#infoModal">
-                    <img src="${infoPng}" alt="..." class="img-circle" data-toggle="modal" data-target="#mapModal">
-                    <img src="${infoPng}" alt="..." class="img-circle">
+                    <img src="${infoPng}" alt="..." class="info-img img-circle" data-toggle="modal" data-target="#infoModal">
+                    <img src="${infoPng}" alt="..." class="info-img img-circle" data-toggle="modal" data-target="#mapModal">
+                    <img src="${infoPng}" alt="..." class="info-img img-circle" data-toggle="modal" data-target="#waModal">
                 </div>
             </div><!-- /.row -->
             <div id="search-result">
@@ -76,7 +76,7 @@
     </div>
 
 
-    <!-- Modal -->
+    <!-- Info Modal -->
     <div class="modal fade" id="infoModal" tabindex="-1" aria-labelledby="myModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
@@ -95,7 +95,7 @@
         </div>
     </div>
 
-    <!-- Modal -->
+    <!-- Map Modal -->
     <div class="modal fade" id="mapModal" tabindex="-1" aria-labelledby="myModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
@@ -105,6 +105,21 @@
                 </div>
                 <div class="modal-body">
                     <div id="map-canvas"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- W|A Modal -->
+    <div class="modal fade" id="waModal" tabindex="-1" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="myModalLabel">Modal title</h4>
+                </div>
+                <div class="modal-body">
+                    <div id="pod-container"></div>
                 </div>
             </div>
         </div>
