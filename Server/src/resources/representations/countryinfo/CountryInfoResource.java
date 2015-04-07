@@ -6,6 +6,10 @@ import interfaces.Country;
 import interfaces.CountryNameToAlpha2Converter;
 import interfaces.CountryNameToAlpha2Converter.ConversionResult;
 import interfaces.CountryProvider;
+import org.apache.velocity.Template;
+import org.apache.velocity.app.VelocityEngine;
+import org.apache.velocity.runtime.RuntimeConstants;
+import org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader;
 import org.restlet.data.MediaType;
 import org.restlet.data.Status;
 import org.restlet.ext.velocity.TemplateRepresentation;
@@ -20,6 +24,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class CountryInfoResource extends ServerResource {
+
+    private VelocityEngine velocityEngine;
 
     @Get("html")
     public Representation represent() {
@@ -37,11 +43,14 @@ public class CountryInfoResource extends ServerResource {
         final Country country = provider.getCountryInfoFromAlpha2Code(conversion.getAlpha2Code());
         if(country == null) return get404(conversion); // TODO: Make fault tolerant by using another CountryProvider.
 
+        if(velocityEngine == null) initializeVelocityEngine();
+
         Map<String, Object> dataModel = new HashMap<>();
         dataModel.put("country", country);
         dataModel.put("message", message);
-        return new TemplateRepresentation("./src/resources/representations/countryinfo/countryInfo.vtl",
-                dataModel, MediaType.TEXT_HTML);
+
+        Template template = velocityEngine.getTemplate("templates/countryinfo.vtl");
+        return new TemplateRepresentation(template, dataModel, MediaType.TEXT_HTML);
     }
 
     private String getWarnMessage(ConversionResult conversion) {
@@ -71,5 +80,12 @@ public class CountryInfoResource extends ServerResource {
         } catch (UnsupportedEncodingException e) {
             throw new RuntimeException(e); // TODO: Handle exception
         }
+    }
+
+    private void initializeVelocityEngine(){
+        velocityEngine = new VelocityEngine();
+        velocityEngine.setProperty(RuntimeConstants.RESOURCE_LOADER, "classpath");
+        velocityEngine.setProperty("classpath.resource.loader.class", ClasspathResourceLoader.class.getName());
+        velocityEngine.init();
     }
 }
