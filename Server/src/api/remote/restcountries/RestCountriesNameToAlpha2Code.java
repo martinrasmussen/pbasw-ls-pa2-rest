@@ -9,6 +9,9 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLDecoder;
 
+/**
+ * Implementation of the CountryNameToAlpha2Converter, utilizing the API at 'restcountries.eu'.
+ */
 public class RestCountriesNameToAlpha2Code implements CountryNameToAlpha2Converter {
 
     private static final String BASE_REST_PATH_TEMPLATE = "http://restcountries.eu/rest/v1/name/%s?fullText=true";
@@ -17,29 +20,12 @@ public class RestCountriesNameToAlpha2Code implements CountryNameToAlpha2Convert
     private static final String CAPITAL_PROPERTY = "capital";
     private static final String LATLNG_PROPERTY = "latlng";
 
-    @Override
-    public ConversionResult convert(String countryName) {
-        ConversionResult.ConversionResultStatus resultStatus;
-        RestCountriesCountry backupCountry = null;
-        try (InputStream stream = getUrl(countryName).openStream()) {
-            Reader reader = new BufferedReader(new InputStreamReader(stream));
-            JsonNode node = new ObjectMapper().readTree(reader);
-            backupCountry = getBackupCountry(node);
-            resultStatus = isMismatch(countryName, backupCountry.getName()) ?
-                    ConversionResult.ConversionResultStatus.WARN : ConversionResult.ConversionResultStatus.OK;
-        } catch (IOException e) {
-            resultStatus = ConversionResult.ConversionResultStatus.ERROR;
-        }
-
-        return new RestCountriesConversionResult(countryName, backupCountry.getName(), backupCountry.getISO(), resultStatus, backupCountry);
+    private static JsonNode getJsonNodeFromInputStream(InputStream stream) throws IOException {
+        Reader reader = new BufferedReader(new InputStreamReader(stream));
+        return new ObjectMapper().readTree(reader);
     }
 
-    private boolean isMismatch(String requestName, String resultName) throws UnsupportedEncodingException {
-        String decodedCountryName = URLDecoder.decode(requestName, "utf-8");
-        return !decodedCountryName.equalsIgnoreCase(resultName);
-    }
-
-    private RestCountriesCountry getBackupCountry(JsonNode json) {
+    private static RestCountriesCountry getBackupCountry(JsonNode json) {
         JsonNode countryNode = json.get(0);
         String name = countryNode.get(NAME_PROPERTY).asText();
         String capital = countryNode.get(CAPITAL_PROPERTY).asText();
@@ -56,11 +42,36 @@ public class RestCountriesNameToAlpha2Code implements CountryNameToAlpha2Convert
         return country;
     }
 
-    private URL getUrl(String countryName) throws MalformedURLException {
+    private static URL getUrl(String countryName) throws MalformedURLException {
         String path = String.format(BASE_REST_PATH_TEMPLATE, countryName);
         return new URL(path);
     }
 
+    private static boolean isMismatch(String requestName, String resultName) throws UnsupportedEncodingException {
+        String decodedCountryName = URLDecoder.decode(requestName, "utf-8");
+        return !decodedCountryName.equalsIgnoreCase(resultName);
+    }
+
+    @Override
+    public ConversionResult convert(String countryName) {
+        ConversionResult.ConversionResultStatus resultStatus;
+        RestCountriesCountry backupCountry = null;
+        try (InputStream stream = getUrl(countryName).openStream()) {
+            JsonNode node = getJsonNodeFromInputStream(stream);
+            backupCountry = getBackupCountry(node);
+            resultStatus = isMismatch(countryName, backupCountry.getName()) ?
+                    ConversionResult.ConversionResultStatus.WARN : ConversionResult.ConversionResultStatus.OK;
+        } catch (IOException e) {
+            resultStatus = ConversionResult.ConversionResultStatus.ERROR;
+        }
+
+        return new RestCountriesConversionResult(countryName, backupCountry.getName(), backupCountry.getISO(), resultStatus, backupCountry);
+    }
+
+    /**
+     * An extended conversion result holding a "backup country" with information from the converter. This country can be
+     * used in case other API's contain no information about the country.
+     */
     public class RestCountriesConversionResult extends ConversionResult {
 
         private RestCountriesCountry backupCountry;

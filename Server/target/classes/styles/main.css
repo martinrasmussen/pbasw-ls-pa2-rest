@@ -50,3 +50,8 @@ body {
     margin: 0px;
     padding: 0px;
 }
+
+#country-list td{
+    padding: 0px 10px;
+    border: 1px dashed #222;
+}

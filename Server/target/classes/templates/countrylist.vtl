@@ -1,7 +1,8 @@
 #set($bootstrapCss = 'https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css')
-#set($bootstrapJs = 'https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js')
 
 #set($mainCss = '/styles/main.css')
+#set($columnCount = 6) ## Maybe make dynamic somehow..?
+
 <!DOCTYPE html>
 <html lang="en">
     <head>
@@ -24,9 +25,16 @@
     </head>
     <body>
         <div id="country-list">
-            #foreach($countryName in ${countryNames})
-                <a href="/countries/$countryName">$countryName</a></br>
-            #end
+            <table>
+                <tr>
+                #foreach($countryName in ${countryNames})
+                    #if($foreach.index % $columnCount == 0)
+                        </tr><tr>
+                    #end
+                    <td><a href="/countries/$countryName">$countryName</a></br></td>
+                #end
+                </tr>
+            </table>
         </div>
     </body>
 </html>
