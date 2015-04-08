@@ -6,11 +6,8 @@ import org.restlet.Restlet;
 import org.restlet.data.Protocol;
 import org.restlet.resource.Directory;
 import org.restlet.routing.Router;
-import org.restlet.routing.Template;
 import org.restlet.routing.TemplateRoute;
 import org.restlet.routing.Variable;
-import resources.HelloWorldResource;
-import resources.HelloWorldRestlet;
 import resources.representations.countries.CountryListResource;
 import resources.representations.countryinfo.CountryInfoResource;
 import resources.representations.proxy.XMLProxyResource;
@@ -34,10 +31,6 @@ public class ServerApplication extends Application {
     public synchronized Restlet createInboundRoot() {
         Router router = new Router(getContext());
 
-        // Testing
-        router.attach("/resource", HelloWorldResource.class);
-        router.attach("/restlet", new HelloWorldRestlet());
-
         // Country service
         router.attach("/countries/{countryName}", CountryInfoResource.class);
         router.attach("/countries", CountryListResource.class);
@@ -49,8 +42,8 @@ public class ServerApplication extends Application {
 
         String classPath = getClass().getClassLoader().getResource("").getPath();
         final String protocol = "file://";
-        router.attach("/images", new Directory(getContext(), protocol+classPath+"/images/"));
-        router.attach("/styles", new Directory(getContext(), protocol+classPath+"/styles/"));
+        router.attach("/images", new Directory(getContext(), protocol + classPath + "/images/"));
+        router.attach("/styles", new Directory(getContext(), protocol + classPath + "/styles/"));
 
         return router;
     }

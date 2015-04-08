@@ -55,11 +55,7 @@ var podContainer = ${jQuery}("#pod-container");
 var waRequest = new XMLHttpRequest();
 waRequest.open('GET', waRequestUrl, true);
 waRequest.onreadystatechange = function waReadyStatechange(){
-    var readyState = waRequest.readyState;
-    if(readyState != 4){
-        console.log("W|A ready state: "+readyState);
-        return;
-    }
+    if(waRequest.readyState != 4) return; // Only react to state 4 (done state)
     var $xml = ${jQuery}(${jQuery}.parseXML(waRequest.response));
     var pods = $xml.find("pod");
     for(var i = 0; i < pods.length; i++){
