@@ -59,6 +59,7 @@ public class ServerApplication extends Application {
         xmlProxyRoute.setMatchingQuery(true);   // Allow queries
         xmlProxyRoute.getTemplate().getVariables().put("url", new Variable(Variable.TYPE_URI_ALL)); // Allow uri in parameters
 
+        // Resources
         String classPath = getClass().getClassLoader().getResource("").getPath();
         final String protocol = "file://";
         router.attach("/images", new Directory(getContext(), protocol + classPath + "/images/"));

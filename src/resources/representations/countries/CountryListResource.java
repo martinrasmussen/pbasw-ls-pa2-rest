@@ -27,7 +27,7 @@ public class CountryListResource extends ServerResource {
     private static final String COUNTRY_LIST_SERVICE_URL = "http://restcountries.eu/rest/v1/all";
     private static final String COUNTRY_NAME_FIELD = "name";
 
-    @Get("json")
+    @Get("html")
     public Representation represent() {
         try (InputStream input = new URL(COUNTRY_LIST_SERVICE_URL).openStream()) {
             BufferedReader reader = new BufferedReader(new InputStreamReader(input, Charset.forName("utf-8")));
