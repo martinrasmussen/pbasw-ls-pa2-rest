@@ -12,7 +12,18 @@ import resources.representations.countries.CountryListResource;
 import resources.representations.countryinfo.CountryInfoResource;
 import resources.representations.proxy.XMLProxyResource;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class ServerApplication extends Application {
+
+    private VelocityManager velocityManager;
+    private Map<String, String> xmlProxyCache; // A very simple cache based of a Map. Should implement ttl.
+
+    public ServerApplication() {
+        this.velocityManager = new VelocityManager();
+        this.xmlProxyCache = new HashMap<>();
+    }
 
     public static void main(String[] args) throws Exception {
         Component component = new Component();
@@ -25,6 +36,14 @@ public class ServerApplication extends Application {
 
         component.start();
 
+    }
+
+    public VelocityManager getVelocityManager() {
+        return velocityManager;
+    }
+
+    public Map<String, String> getXmlProxyCache() {
+        return xmlProxyCache;
     }
 
     @Override
@@ -46,6 +65,13 @@ public class ServerApplication extends Application {
         router.attach("/styles", new Directory(getContext(), protocol + classPath + "/styles/"));
 
         return router;
+    }
+
+    public void Debug() {
+        System.out.println("Contents of cache: ");
+        for (String s : xmlProxyCache.keySet()) {
+            System.out.println("- " + s);
+        }
     }
 
 }

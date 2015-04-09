@@ -7,17 +7,10 @@ import org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader;
 
 public class VelocityManager {
 
-    private static VelocityManager instance;
     private VelocityEngine velocityEngine;
 
-    // Fuck it. Singletons!
-    private VelocityManager() {
+    public VelocityManager() {
         initializeVelocityEngine();
-    }
-
-    public static VelocityManager getInstance() {
-        if (instance == null) instance = new VelocityManager();
-        return instance;
     }
 
     public Template getTemplate(String pathToTemplate) {

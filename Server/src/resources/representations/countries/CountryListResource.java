@@ -1,5 +1,6 @@
 package resources.representations.countries;
 
+import application.ServerApplication;
 import application.VelocityManager;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -37,9 +38,10 @@ public class CountryListResource extends ServerResource {
                 String countryName = countryNode.get(COUNTRY_NAME_FIELD).asText();
                 countryNames.add(countryName);
             }
-            Template template = VelocityManager.getInstance().getTemplate("templates/countrylist.vtl");
             Map<String, Object> dataModel = new HashMap<>(1);
             dataModel.put("countryNames", countryNames);
+            VelocityManager velocityManager = ((ServerApplication) getApplication()).getVelocityManager();
+            Template template = velocityManager.getTemplate("templates/countrylist.vtl");
             return new TemplateRepresentation(template, dataModel, MediaType.TEXT_HTML);
         } catch (IOException e) {
             throw new RuntimeException(e); // TODO: Handle exception
