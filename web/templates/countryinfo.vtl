@@ -7,6 +7,8 @@
 
 #set($mainCss = '/styles/main.css')
 #set($infoPng = '/images/info.png')
+#set($gmapsPng = '/images/gmaps.png')
+#set($waPng = '/images/wa.png')
 ## End velocity variables
 
 <!DOCTYPE html>
@@ -53,8 +55,8 @@
                 </div><!-- /.col-lg-6 -->
                 <div id="countryInfo">
                     <img src="${infoPng}" alt="..." class="info-img img-circle" data-toggle="modal" data-target="#infoModal">
-                    <img src="${infoPng}" alt="..." class="info-img img-circle" data-toggle="modal" data-target="#mapModal">
-                    <img src="${infoPng}" alt="..." class="info-img img-circle" data-toggle="modal" data-target="#waModal">
+                    <img src="${gmapsPng}" alt="..." class="info-img" data-toggle="modal" data-target="#mapModal">
+                    <img src="${waPng}" alt="..." class="info-img img-circle" data-toggle="modal" data-target="#waModal">
                 </div>
             </div><!-- /.row -->
             <div id="search-result">
